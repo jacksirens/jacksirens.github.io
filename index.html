@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Jeff Sirens</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(https://avatars2.githubusercontent.com/u/22902284?s=60&amp;v=4)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Jeff Sirens</div>
+        
+            <div>Be a tackey Coder</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/%E6%9D%A5%E8%87%AA%E5%89%8D%E7%AB%AF%E5%B0%8F%E7%99%BD%E7%9A%84%E7%9E%8E%E9%80%BC%E9%80%BC/">来自前端小白的瞎逼逼</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T08:35:08.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9A%8F%E4%BE%BF%E5%86%99%E5%86%99/">随便写写</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="前端工程化和架构"><a href="#前端工程化和架构" class="headerlink" title="前端工程化和架构"></a>前端工程化和架构</h2><blockquote>
+<p>什么叫工程化，大概就是能有个方法，让一大堆人，有组织有纪律地一起干活，目的是提高效率，保证质量。</p>
+</blockquote>
+<h3 id="在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。"><a href="#在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。" class="headerlink" title="在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。"></a>在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。</h3><p>上述的各个环节组合在一起形成了一个正常的开发模型，可能用不同的模式迭代会有细微的不同。</p>
+<p>上面所说的环节并非串行关系也没有互斥性，但是也没有绝对的并行关系，可以在code的时候也会对代码做维护，为了保证项目时间紧凑，产品总是领先开发一个迭代的设计等等</p>
+<p>工程化和架构本身目的是一致的：提高开发效率，这里的开发效率不单单指提升编码效率，而是提升整个日常开发系统的执行效率。</p>
+<p>而在细节上架构和工程化又有些许不同：</p>
+<ul>
+<li>架构： 侧重于系统的抽象、拆分、组织方式等的调整，使用不同顺序/层次的“构”组成“架”来支撑起一个项目的良性发展</li>
+<li>工程化： 侧重在 编码-&gt;测试-&gt;维护 环节提高生产效率，更注重项目在“架”通用方法的具体实现上</li>
+</ul>
+<p>大漠说过有意思的一句话：</p>
+<pre><code>架构
+构
+就是公司客观环境下的纷繁业务
+架呢
+是支持这些业务所用的技术手段
+也就是对公司现有业务情况的认知
+在这个之上
+来使用不同的架支撑构
+给出更符合构内在联系的架</code></pre><h3 id="工程化"><a href="#工程化" class="headerlink" title="工程化"></a>工程化</h3><p>工程化解决的核心问题： 开发和部署</p>
+<p>而面向开发角度，要解决的问题在于：</p>
+<ul>
+<li>提高代码开发效率</li>
+<li>降低维护难度</li>
+</ul>
+<p>解决方案的话，暂时想到以下几点：</p>
+<ul>
+<li>制定团队开发规范，提高团队协作能力</li>
+<li>模块化开发，利用分治思想让代码不再强依赖于环境</li>
+</ul>
+<p>而部署方面：</p>
+<ul>
+<li>代码审核</li>
+<li>压缩打包</li>
+<li>简化各版本发布固有流程</li>
+<li>单元测试</li>
+</ul>
+<p>要解决上述问题，需要的是编译，打包工具和一些脚本语言辅助</p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>架构本身是一种可变的模式，要根据当前技术人员和项目需求选出最适应当下项目的细节与规范。</p>
+<p>比如在工程化提到的开发规范和模块化，可能在工程化本身只是一个虚的概念，可能只知道需要使用模块化，模块化能做分治，开发规范也不详尽，可能只是一个通用的eslint，完全没有考虑当下的项目是不是需要代码约束中的某几条细节。</p>
+<p>而在架构设计中，需要较为明确的给出在当前项目开发过程中，较为推荐的code模式，对业务点进行拆分，把错综复杂的枢纽逻辑分治到各个独立且不相关的业务中，并且对相应代码要求给出一个全面的可执行准则。</p>
+<p>所以，架构更倾向于对项目细节和团队人员协调的把控，但是并不是说架构和工程化处在一个对立面，在谈区别的时候，就提到架构是利用更好的“构”来支撑起项目需要的“架”，而工程化更专注于提升“架”的效率，所以有一定的包含关系。</p>
+<h2 id="设计模式有什么优势"><a href="#设计模式有什么优势" class="headerlink" title="# 设计模式有什么优势"></a># 设计模式有什么优势</h2><blockquote>
+<p>首先，设计模式并不是需求的解决办法。</p>
+</blockquote>
+<blockquote>
+<p>其次，设计模式并不能带来代码执行效率上的提升，某种意义上来说还占用了额外的空间（状态对象，订阅发布器），增加了查找，订阅，发布，执行的中间逻辑。</p>
+</blockquote>
+<ul>
+<li>设计模式是什么</li>
+</ul>
+<p>编写代码的一种套路，设计模式是总结出来的一种编写形式。这种东西不是结果正确与否就能写结论的。</p>
+<ul>
+<li>那么，设计模式到底能干什么。。</li>
+</ul>
+<p>首先，提升开发者的效率：</p>
+<ol>
+<li>在开发过程中，好的代码职责分配能让多个人对同一个项目进行功能开发且不出现代码相互污染，且每个开发人员做出来的单一功能都具备高聚合低耦合且与外界隔离的性质，即职责单一。与外界隔离是为了保证这一组间内的执行不受外界干扰，可以保证其功能在执行状态下的稳定。 </li>
+<li>在维护过程中，当把项目做的越大、越复杂、算法越扭曲、界面越华丽、尺寸已经大到觉得不学习新的方法论就肯定会让代码失控的时候，设计模式的套路就可以整理出清晰的脉络。</li>
+<li>强复用性，因为基本上过了设计模式的代码都是已经独立封装好了的，这样的代码在需要的场景下可以通过统一接口的形式用较低的时间成本进行对接。</li>
+</ol>
+<p>可能还有，装逼或者因为某种工程师的信仰或洁癖。。。</p>
+<p>所以，综上所述，不是所有情况都适合使用设计模式的（当然强行改没人拦着）</p>
+<ol>
+<li>已经成型(交付)且没有bug/需求的项目不需要通过设计模式修改。</li>
+<li>功能单一且复杂度不高的情况下不适用</li>
+<li>任何某些人觉得这样就挺好的代码（当然另一些人不这么认为）</li>
+</ol>
+<p>设计模式主要作用： 拆分模块，划分职责。</p>
+<p>面向对象的单一职责原则，大到一个系统、模块的职责边界划分，小到一个类、一个方法的职责。 </p>
+<p>划分职责有什么优势： 每一个模块只做自己职责内的事情，不必管理职责外的内容。这样能保证单一模块的纯净，即稳定，单一。且后续其它功能的扩展不需要对其它模块做任何处理。待后续成型后也可以按照开闭原则再次提炼让其功能保证稳定。</p>
+<p>所以，引用知乎大神的说法：</p>
+<ul>
+<li>简单的功能或演示性的程序不要考虑设计模式</li>
+<li>关注问题而非解决方案。也就是说设计模式里只是一套通用的范式，和问题本身并无太大关联，可以参考设计模式的职责划分对当前问题的处理方法进行调整，减小阅读的成本。</li>
+<li>关注重用而非设计模式。因为设计模式的应用很多情况下是基于模块化，目的就是为了满足重用和较好的可读性，如果代码本身已经能达到一个较好的重用性，在不考虑可读性的情况下可以不用考虑设计模式的调整。</li>
+<li>在支持函数式编程的语言里避免使用设计模式。如前所述，设计模式很多时候是以面向对象为基础的，面向对象本身的劣势就是占用空间，而高阶函数很多情况下是比面向对象更有效的执行方式。</li>
+<li>能用简单的模式解决的问题不要引入复杂的模式</li>
+<li>已经有解决方案的情况下不要硬套设计模式，设计模式不是一切</li>
+<li>正确认识些暂时无法理解的模式，这些模式代表着一类问题，很多时候使用第三方库是更好的选择</li>
+<li>看轻设计模式，它们只能解决一小部分问题</li>
+</ul>
+<p>最后，以解决问题为最终目的。当项目体积越来越大时，觉得现有代码太过浑浊就可以使用设计模式优化结构。</p>
+<h2 id="业务抽象与代码抽象"><a href="#业务抽象与代码抽象" class="headerlink" title="业务抽象与代码抽象"></a>业务抽象与代码抽象</h2><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>业务抽象可能说上去很玄乎，但是就是将用户的需求通过代码逻辑这一载体，变成一套含有既定规则的工具，这一个工具泛指所有软件（后台/前台/游戏软件/外挂 etc.）</p>
+<p>在前端中，工具基本上是一个依赖于web-view,浏览器这一大环境下的可视化操作界面，程序员通过代码赋予这个界面外观(html + css)，操作逻辑(js),然后用户在这一套操作逻辑下进行基本的操作。</p>
+<p>而代码抽象，就是下面的这些东西。</p>
+<h3 id="如何拆解需求"><a href="#如何拆解需求" class="headerlink" title="如何拆解需求"></a>如何拆解需求</h3><p>套用那标准的5个问句，可以初步完成一个需求到功能点的转化：</p>
+<ul>
+<li>who: 谁去让这个代码段真正运行，是用户操作，还是加载后自执行。</li>
+<li>what: 操作什么，每一段代码都是有意义的，前端代码无论做多少处理，最终都是为UI界面/后台数据 服务的，所以，要操作数据，控制dom，又或者是控制浏览器做些什么。</li>
+<li>when: 什么时候执行，立即执行，或者是延迟执行，又或者是异步请求的回调。</li>
+<li>where: 操作后的内容去向，是前往下一个功能点，或是仅展示行为。</li>
+<li>how: 如何操作，是操作class，还是操作style，还是只是format数据，计算结果，这个步骤可以考虑使用第三方插件来减少开发成本。</li>
+</ul>
+<p>如果上述解释不了，就再细化拆分。</p>
+<h3 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h3><p>全文都跟着一个功能点走，拖拽功能。（ps: 代码为了节省时间，网上东拼西凑的，能懂这个意思就行）</p>
+<p>抽象在我看来其实也分类别，比如正常抽象就是理解需求，完成需求。写出类似面条文这样的代码，这样的代码功能或单一或混乱，和当前场景基本处于一个强耦合状态（请求路由不可改，元素选择不可改，或强依赖于某些页面上的既定数据），基本不能复用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'.js-drag'</span>).on(<span class="string">'mousedown'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> event = ev || <span class="built_in">window</span>.event;</span><br><span class="line">   <span class="keyword">var</span> disX = event.clientX - $(<span class="string">'.js-drag'</span>).offset().left;</span><br><span class="line">   <span class="keyword">var</span> disY = event.clientY - $(<span class="string">'.js-drag'</span>).offset().top;</span><br><span class="line">   <span class="built_in">document</span>.onmousemove = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">   		<span class="keyword">var</span> eventMove = e || <span class="built_in">window</span>.event;</span><br><span class="line">	    $(<span class="string">'.js-drag'</span>)[<span class="number">0</span>].style.left = (eventMove.clientX - disX) + <span class="string">'px'</span>;</span><br><span class="line">	    $(<span class="string">'.js-drag'</span>)[<span class="number">0</span>].style.top = (eventMove.clientY - disY) + <span class="string">'px'</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	    </span><br><span class="line">	<span class="built_in">document</span>.onmouseup = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	    <span class="built_in">document</span>.onmousemove = <span class="literal">null</span>;</span><br><span class="line">	    <span class="built_in">document</span>.onmouseup = <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>如上所示， 上面的功能完全依赖于[class=”js-drag”]这一元素，如果还有一个[class=”js-drag-1”]的元素也要做拖拽，就必须把所有代码复制一遍然后修改其中的部分代码（这里特指元素选择），这样把类似的功能重复执行多次在项目中是很不可取的，这样的确定功能性的代码还可以接受，但是：</p>
+<p>这里举个🌰：</p>
+<p>假如程序中有10个请求类型的代码，<br>在项目中的请求方式都是</p>
+<pre><code>$.post(&apos;&apos;, (res) =&gt; {
+    var data = JSON.parse(res.body);
+    ......
+});</code></pre><p>假如后端为了节省传输内容而把请求格式从json转为了key:value|key:value 这样的形式。那么，我们是不是就要在10个位置对这个JSON.parse(res.body)做一次修改，假如有20个呢，100个。。。</p>
+<p>请求类型的代码仅仅是后端调整了一下所有接口数据的组合形式就要前端把十余个甚至数十个接口重新做数据的format行为，是项目进度的极大浪费。所以需要把经常出现的相同逻辑做一次合并。</p>
+<p>比如上述场景下，我只需要在全局的文件下声明一个请求方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params">url, callback</span>) </span>&#123;</span><br><span class="line">	$.post(url, (res) =&gt; &#123;</span><br><span class="line">		<span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(res.body);</span><br><span class="line">		<span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(<span class="string">'&#123;'</span> + res.body.split(<span class="string">'|'</span>).join(<span class="string">','</span>) + <span class="string">'&#125;'</span>); <span class="comment">// 只需修改一处就可以调整所有使用这个方法请求接口的代码了。</span></span><br><span class="line">		callback(data);</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用只需要使用getData就行</span></span><br><span class="line">getData(<span class="string">'...'</span>, (data) =&gt; &#123;</span><br><span class="line">	....</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当然上述方法也不是最优解，比如路由拼接，header修改，一些必要但是和具体业务无关的token数据传递都不应该出现在业务逻辑中。至于怎么做相信大佬们都有各自的做法。</span></span><br></pre></td></tr></table></figure>
+
+<p>所以在某些重复使用某一功能的场景下，就需要对某一个功能做封装</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Drag</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.obj = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">    <span class="keyword">this</span>.disX = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">this</span>.disY = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Drag.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">this</span>.obj.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> event = ev || <span class="built_in">window</span>.event;</span><br><span class="line">        self.mouseDown(event);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Drag.prototype.mouseDown = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">this</span>.disX = event.clientX - <span class="keyword">this</span>.obj.offsetLeft;</span><br><span class="line">    <span class="keyword">this</span>.disY = event.clientY - <span class="keyword">this</span>.obj.offsetTop;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">document</span>.onmousemove = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">        self.mouseMove();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">document</span>.onmouseup = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        self.mouseUp();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Drag.prototype.mouseMove = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.obj.style.left = (event.clientX - <span class="keyword">this</span>.disX) + <span class="string">'px'</span>;</span><br><span class="line">    <span class="keyword">this</span>.obj.style.top = (event.clientY - <span class="keyword">this</span>.disY) + <span class="string">'px'</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Drag.prototype.mouseUp = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">document</span>.onmousemove = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">document</span>.onmouseup = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样封装好后就能通过简单调用完成对一个元素的拖拽绑定了</p>
+<p>but，这样就结束了么？</p>
+<p>我们知道，拖拽的应用场景一般是，进度拖拽，元素相对于窗口的拖拽，让元素不遮挡用户操作，所以，在这段代码逻辑中，其实隐含着很多的可扩展代码，比如，拖拽的限制条件（拖拽元素的限制范围，达到/超出限制后的反应，以及 按下鼠标后/拖拽过程中/松开鼠标后 需要执行的UI/逻辑操作）</p>
+<p>在这里的应用场景有，音视频的音量控制(对音量的实时控制)，拖拽后的吸边操作(达到/超出限制后的吸边操作)，0-100%的进度控制(不能超过限制范围)</p>
+<p>当然，为什么只能是web端使用，手机端呢？</p>
+<p>这样就要考虑用UA做机型适配和event.touches[0].clientX/event.clientX这些值的选取了。</p>
+<h4 id="可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前-后挂上可选或可填充的内容，达到一定的扩展性。"><a href="#可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前-后挂上可选或可填充的内容，达到一定的扩展性。" class="headerlink" title="可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前/后挂上可选或可填充的内容，达到一定的扩展性。"></a>可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前/后挂上可选或可填充的内容，达到一定的扩展性。</h4><p>应该发现了，抽象的越彻底，这个代码的可复用性越强，适应的场景也越多，维护的成本也就越小，因为其本身含有的逻辑会变得很纯粹，调整了这个插件，其所有相关的插件使用都会发生调整，这样既保留了代码的共性也保证了差异性，但是用户在特定场景下的配置操作就越多，调用越烦琐。所以轮子总是在符合特定条件下的时候才会顺手。要适当权衡抽象的程度，以免投入和产出不成正比😂。</p>
+<p>PS: 不是说只有js才可以抽象，css也可以抽象，把具有共性的css整合，再比如一些插件的dom自动填充，都可以算是样式的抽象，让样式不再具有强业务，都是通过某几个特定的类组合后适当修饰得到的，这点可以参照bootstrap。</p>
+<img src="/2020/06/04/%E6%9D%A5%E8%87%AA%E5%89%8D%E7%AB%AF%E5%B0%8F%E7%99%BD%E7%9A%84%E7%9E%8E%E9%80%BC%E9%80%BC/abstract-process.jpg">
+
+
+
+
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/RTMP%E6%A0%BC%E5%BC%8F%E8%A7%A3%E6%9E%90/">RTMP格式解析</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T08:23:45.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Media/">Media</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/RTMP/">RTMP</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%86%85%E5%AE%B9/">音视频内容</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <img src="/2020/06/04/RTMP%E6%A0%BC%E5%BC%8F%E8%A7%A3%E6%9E%90/RTMP(Real Time Messaging Protocol).png">
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/gulp-babel-%E5%8D%87%E7%BA%A7-babel-7-x-%E6%93%8D%E4%BD%9C%E7%BB%86%E8%8A%82/">gulp-babel 升级 babel 7.x 操作细节</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T08:09:00.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%8F%92%E4%BB%B6%E5%8D%87%E7%BA%A7/">插件升级</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h3 id="gulp-babel-升级-babel-7-x-操作细节"><a href="#gulp-babel-升级-babel-7-x-操作细节" class="headerlink" title="gulp-babel 升级 babel 7.x 操作细节"></a>gulp-babel 升级 babel 7.x 操作细节</h3><ol>
+<li><p>安装相关 babel 7.x 相关依赖</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D @babel/core @babel/plugin-transform-async-to-generator @babel/preset-env @babel/register @babel/plugin-proposal-optional-chaining regenerator-runtime</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果使用了 babelify 注意 版本信息，可以升级到 10.x</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D babelify@10</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>gulp-babel 升级到 8.x</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D gulp-babel@8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果还是提示 Requires Babel “^7.0.0-0”, but was loaded with “6.26.3”. 则需要 uninstall babel-register 依赖</p>
+</li>
+<li><p>后续提示类似 Failed to load external module babel-register 时，需要注意 gulp 的其中一个依赖 interpret：在 node_modules 查找 interpret 的版本信息，如果版本过低可以安装最新的版本</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i -D interpret@2.1.0</span><br></pre></td></tr></table></figure></li>
+<li><p>修改相应的 babel 设置信息</p>
+</li>
+</ol>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/%E2%80%9C%E4%BA%94%E2%80%9D%E5%A4%A7%E4%B8%BB%E6%B5%81%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8F%8A%E2%80%9C%E5%9B%9B%E2%80%9D%E5%A4%A7%E5%86%85%E6%A0%B8/">“五”大主流浏览器及“四”大内核</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T07:57:56.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="“五”大主流浏览器及“四”大内核"><a href="#“五”大主流浏览器及“四”大内核" class="headerlink" title="“五”大主流浏览器及“四”大内核"></a>“五”大主流浏览器及“四”大内核</h2><blockquote>
+<p>现如今的五大主流浏览器已经变了，八大主流浏览器为 IE，火狐，chrome，Safari，QQ浏览器，UC浏览器，搜狗浏览器等。而内核也从之前的四大变为了三大三小: 火狐的Gecko，chrome的Blink，Safari的Webkit，QQ基于Webkit深度开发的X5，UC基于Webkit开发的U3，夸克基于Webkit开发的AI内核。</p>
+</blockquote>
+<p>注: 华为与UC达成合作，内置浏览器均为UC内核的轻量化版本；OPPO内置浏览器内核在近两年会进行基于Webkit的独立研发和移植。</p>
+<ol>
+<li>IE浏览器<ul>
+<li>老牌浏览器，ie8, 9, 10, 11分别代表了不同兼容性的指标，可以说是当前浏览器环境水桶中最短的那一块板，这里兼容性不说可以通过babel，css可以变相支持的能力。</li>
+<li>ie8兼容，主要考虑的是大多数 css 与 部分 attribute 不支持。例如: background不支持连写，border-radius 不支持，css3, html5 不支持，分辨率查询不支持，canvas不支持等。</li>
+<li>ie9 兼容，主要是在 文件处理 和 cros 请求上。例如: FileReader等相关api， 跨域请求不支持添加header等。</li>
+<li>ie10兼容，主要是二进制文件处理，原生拖拽事件支持不完善等</li>
+<li>ie11兼容，ie11已经与chrome在语法支持上十分接近了，但还是有不支持的内容，这块要分两个情况解释<ul>
+<li>win7升级的ie11依旧沿用的是老的系统，所以除了在ui和部分语法上支持更到位外，和win10 ie11相比，不支持Media Source Extensions，即不支持解码标准h.264标准流。这里的主要原因是，win7 不支持 IE 通过 CPU 控制 GPU 解析视频。</li>
+<li>win10 ie11 不兼容 webgl2.0，不支持本地下载 createObjectURL，svg 兼容性问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>现阶段微软在 Edge 浏览器 放弃自家内核使用了 chromium 内核。至此，针对 IE 的后续兼容性方法探究终于可以告一段落。</p>
+<ol start="2">
+<li><p>Opera浏览器</p>
+<ul>
+<li>已经沿用chrome内核，放弃自研，opera mini</li>
+</ul>
+</li>
+<li><p>Safari浏览器</p>
+<ul>
+<li>Ummmm,最具有个性的浏览器，可以这么说。在3D渲染方面比 chrome 更逼近实际现象。</li>
+<li>天然支持Hls视频播放。</li>
+<li>mac下调试利器，但是对二进制和特殊文件请求做不到预览功能，可能还需要借助抓包软件</li>
+<li>插件系统不完善</li>
+</ul>
+</li>
+<li><p>Firefox浏览器</p>
+<ul>
+<li>知之甚少，除了调试以外没发现和 chrome 在结果上有很大差异。</li>
+</ul>
+</li>
+<li><p>Chrome浏览器</p>
+<ul>
+<li>行业标杆，在兼容性方面不多说</li>
+<li>调试模式下的多媒体显示结果和真机存在较大差异</li>
+<li>大多数情况会先于W3C标准开发内容倒逼组织引用内容。。有点仗势欺人的错觉</li>
+</ul>
+</li>
+<li><p>大多数浏览器厂商的内核会进行沿用</p>
+<ul>
+<li>猎豹浏览器内核：IE+Chrome双内核；</li>
+<li>搜狗、遨游浏览器内核：Trident（兼容模式）+Webkit（高速模式）；</li>
+<li>世界之窗内核、百度浏览器、2345浏览器内核：以前是IE内核，现在也是IE+Chrome双内核；</li>
+</ul>
+</li>
+<li><p>QQ浏览器</p>
+<ul>
+<li>使用基于 webkit 二开的 x5内核</li>
+<li>新增视频抓取，广告推广等。</li>
+</ul>
+</li>
+<li><p>360浏览器</p>
+<ul>
+<li>IE+webkit(自研)；</li>
+<li>新增UA伪装，视频抓取等。</li>
+</ul>
+</li>
+<li><p>UC，夸克内核：</p>
+<ul>
+<li>IE+webkit(自研)；</li>
+<li>新增广告拦截，信息抓取，智能预读等。做相关开发需要小心，谨防敏感词屏蔽。</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/H-264%E9%83%A8%E5%88%86%E6%A0%BC%E5%BC%8F%E8%A7%A3%E6%9E%90/">H.264部分格式解析</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T07:32:08.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Media/">Media</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/MPEG/">MPEG</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/H-264/">H.264</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%86%85%E5%AE%B9/">音视频内容</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <img src="/2020/06/04/H-264%E9%83%A8%E5%88%86%E6%A0%BC%E5%BC%8F%E8%A7%A3%E6%9E%90/AVC H.264.png">
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/%E6%97%B6%E9%97%B4%E4%BA%8B%E4%BB%B6%E9%98%9F%E5%88%97/">时间事件队列</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T07:03:24.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h1 id="时间事件队列"><a href="#时间事件队列" class="headerlink" title="时间事件队列"></a>时间事件队列</h1><p>在ESLive的直播和直播回放中撇开播放器的主播放逻辑（换流刷新/swf和hls区分）和大多数控件的功能（全屏/直播清晰度/尺寸比例设置）以外，比较主要的就是信令同步/回放的操作同步。这里就需要做一个比较准确的时间事件队列的维护。</p>
+<h2 id="设计初"><a href="#设计初" class="headerlink" title="设计初"></a>设计初</h2><p>业务需求：需要在既定时间执行相应的操作，既定时间可以在具体业务中独自设立，需要保证其精准度</p>
+<p>既然要做一个时间事件队列，那么需要做的首先是三个功能点，队列内事件的添加，事件执行，和队列内抛出。</p>
+<p>但是在这三个方法之前，需要首先考虑的事情：</p>
+<ul>
+<li>在一个播放的时间轴中，事件的执行应该是按时间顺序依次执行的。</li>
+<li>播放器的获取时间的方法拿到的事当前播放的时间点，（原生video标签获取的速度大约是1s内4-5次，而flash可以通过自定义事件随意抛出，项目中是3s一次）大概率不会与事件添加的时间点一致，且在直播中会有换流操作/播放器可以直接跳转时间点，会跳过多个时间点</li>
+<li>在获取精准度较低的情况下，可能出现同一个时间点注册多个方法的情况</li>
+</ul>
+<h3 id="依次处理"><a href="#依次处理" class="headerlink" title="依次处理"></a>依次处理</h3><ul>
+<li><p>依次执行的点，需要做的是要保存时间数据和具体方法内容，</p>
+<pre><code>let List = {
+    event: {
+        1: () =&gt; console.log(1), 
+        2: () =&gt; console.log(2), 
+        3: () =&gt; console.log(3)
+    }
+};
+//这种数据格式可以完成时间、方法都保存的功能
+
+//执行时间方法就只需要
+list.event[time]();</code></pre></li>
+<li><p>播放器本身拿到的时间点与注册事件的不一致/跳过多个时间事件的点，其实就是需要筛选出小于等于当前时间点的所有时间，对象的形式遍历起来操作比较麻烦，所以，需要另外一个参照物去取一个符合条件的时间点的集合。so，感觉一个数据结构已经无法满足这个需求了：</p>
+<pre><code>let List = {
+    time: [1, 2, 3]
+    event: {
+        1: () =&gt; console.log(1), 
+        2: () =&gt; console.log(2), 
+        3: () =&gt; console.log(3)
+    }
+};
+//这种数据格式的要求就是time设个数据必须保持有序状态，衍生出来的需求就是在注册事件的时候需要让time的数据一直保持有序。这里让setList返回当前数据所在的下标是为了方便后续获取符合条件的时间区间。
+
+setList(list, value) {
+    if (isArray(list)) {
+      if (!list.length) {
+        list.push(value);
+        return 1;
+      }
+      for (var i = 0; i &lt; list.length; i++) {
+        if (list[i] &gt; value) {
+          list.splice(i, 0, value);
+          return i + 1;
+        } else if (i == list.length - 1) {
+          list.push(value);
+          return i + 1;
+        }
+      }
+    }
+}
+
+//相应的触发也需要作出适当调整（篇幅较长）
+
+getTimeIndex(time) {
+    //这里做深拷贝是为了不让视频时间污染原有的时间点。感觉上可以修改setList避开这里的深拷贝
+    let timeCurrentList = Compute.cloneObj(this.timeList);
+    let eventIndex = Compute.setList(timeCurrentList, time);
+    if (eventIndex &gt;= 0) {
+      return {
+        index: eventIndex,
+        list: timeCurrentList.slice(0, eventIndex)
+      };
+    }
+  return {
+    index: -1,
+    list: []
+  }
+}
+
+triggerByLimit(time) {
+    let currentTrigger = getTimeIndex(time);
+    if(!currentTrigger.index) {
+      return;
+    }
+    list.time.map((value) =&gt; {
+      triggerByTime(value);
+    })
+  }
+
+triggerByTime(time) {
+    if(this.list.event[time]) {
+      this.list.event[time]();
+    }
+}
+
+//在这里就衍生出一个细节，已经执行过的方法不应该被多次执行，这里就需要把已经执行过的方法抛出，
+
+removeFromList(list, value) {
+    if (this.isArray(list)) {
+      if (list.indexOf(value) &gt;= 0) {
+        list.splice(list.indexOf(value), 1);
+        return list;
+      }
+    }
+  }
+
+  //执行完方法后需要做抛出操作
+  delete list.event[time];
+  removeFromList(list.time, time);</code></pre></li>
+</ul>
+<ul>
+<li><p>出现同一个时间点注册多个方法的问题，依次衍生出两个小问题，一个是相同时间的事件添加，原先对象的形式后加的事件会把之前的方法覆盖，所以作出适当调整：</p>
+<pre><code>let List = {
+    time: [1, 2, 3]
+    event: {
+        1: [
+            () =&gt; console.log(1-1),
+            () =&gt; console.log(1-2)
+        ], 
+        2: [
+            () =&gt; console.log(2)
+        ], 
+        3: [
+            () =&gt; console.log(3-1),
+            () =&gt; console.log(3-2),
+            () =&gt; console.log(3-3),
+        ]
+    }
+};
+//这样就能记录同一个时间点的方法。</code></pre><p>  由这个点衍生出来的一个细节就是，在time列表添加的时候，遇到相同时间点的事件其实没有必要多次录入。所以对setList作出细微调整</p>
+<pre><code>setList(list, value) {
+    if (this.isArray(list)) {
+      if (list.indexOf(value) &gt;= 0) {
+        return list.indexOf(value) + 1;
+      }
+      if (!list.length) {
+        list.push(value);
+        return 1;
+      }
+      for (var i = 0; i &lt; list.length; i++) {
+        if (list[i] &gt; value) {
+          list.splice(i, 0, value);
+          return i + 1;
+        } else if (i == list.length - 1) {
+          list.push(value);
+          return i + 1;
+        }
+      }
+    }else {
+      return 0;
+    }
+  }
+
+       //相应的，触发也要做出适当修改，原先的this.list.event[time]();也要修改，抛出也要修改。。。。
+       this.eventList[time].map((value) =&gt; {
+     value();
+     removeFromList(this.eventList[time], value);
+    if (!this.eventList[time].length) {
+      removeFromList(this.timeList, time);
+      delete this.eventList[time];
+    }
+ });</code></pre></li>
+</ul>
+<p>这样的话，需要事件列表的格式出来了，注册行为也差不多就出来了：</p>
+<pre><code>setTimeList(time) {
+    setList(this.list.time, time);
+  }
+
+on(event) {
+    this.setTimeList(event.time);
+    if (!this.eventList[event.time]) {
+      this.eventList[event.time] = [event.callBack];
+    }else {
+      this.eventList[event.time].push(event.callBack);
+    }
+}</code></pre><h2 id="精准度-amp-回跳功能"><a href="#精准度-amp-回跳功能" class="headerlink" title="精准度&amp;回跳功能"></a>精准度&amp;回跳功能</h2><p>例如：当下注册了一个1.0秒应该执行的方法，但是video标签时间戳跑的时候是获取到的当前时间是0.9s, 1.5s的顺序，或者在flash中执行的抛出的时间断可能是3s一次，例如 0.7s, 3.5s，这样事件按照上面的逻辑分别是在1.5s和3.5s才被触发，分别延迟了0.5s和2.5s。</p>
+<p>这种结果实话不应该出现，所以：</p>
+<ul>
+<li>筛选符合条件的时间段可以稍长于当前时间</li>
+<li>把当前时间到稍长时间这一区间的方法做一个延迟处理（setTimeout）</li>
+</ul>
+<p>回跳案例：当下注册了一个10.0秒应该执行的方法，但是video标签时间戳跑的时候是获取到的当前时间是9.5s, 10.1s的顺序，然后稍长时间设定的1s，这样事件在在9.5s被注册进队列内。然后在9.8s回跳至3s，但是已经延时处理的内容并没有取消，这样本应该在10s出现的方法在3.2s还是照常执行。</p>
+<p>所以。。在回跳方法中还要操作那些延迟处理的方法集合，这样就需要引入一个等待执行的事件队列。</p>
+<pre><code>waittingList = {
+    1: [
+        () =&gt; console.log(1),
+        () =&gt; console.log(2)
+    ]
+}</code></pre><p>当然，同样的，setTimeout也要做处理。这里直接放一个小工具，方便操作。</p>
+<pre><code>class WaittingExecut{
+  constructor(options) {
+    this.callBack = options.callBack;
+    this.waitTime = options.waitTime;
+    this.init();
+  }
+
+  init() {
+    if (this.waitTime &gt; 0) {
+      this.waitting = setTimeout(() =&gt; {
+        this.callBack();
+        this.doneFlag = true;
+      },this.waitTime);
+    }else {
+      this.callBack();      
+      this.doneFlag = true;
+    }
+  }
+
+  execut() {
+    if(!this.doneFlag) {
+      this.callBack();
+      clearTimeout(this.waitting);
+      this.doneFlag = true;
+    }
+  }
+
+  abort() {
+    if(!this.doneFlag) {
+      clearTimeout(this.waitting);
+      this.doneFlag = true;
+    }
+  }
+
+  reset() {
+    if(!this.doneFlag) {
+      clearTimeout(this.waitting);
+    }
+    this.doneFlag = false;
+    this.init();
+  }
+
+  refresh(callBack, waitTime) {
+    this.abort();
+    this.callBack = callBack;
+    this.waitTime = waitTime;
+    this.init();
+  }
+}
+
+export default WaittingExecut;</code></pre><p>这样就可以比较方便的对延时行为进行设置，取消，立即执行，重启，重新设定这些操作了。</p>
+<p>这样把上述细节再处理一下，首先，延时任务要出现，就要有一个limit的概念。</p>
+<p>所以，筛选需要的事件要做适当修改</p>
+<pre><code>triggerByLimit(time, limit) {
+    //要把需要的事件稍稍延长，当然这个limit可以当作对象的固定属性，这里可能按照实际获取的时间间隔为参照更好一些，所以仅仅当作参数方法使用。
+    let currentTrigger = this.getTimeIndex(time + limit);
+    if(!currentTrigger.index) {
+      return;
+    }
+    currentTrigger.list.map((value, index, array) =&gt; {
+        这里也需要把当前时间给引入，方便做延时处理。
+      this.triggerByTime(value, time);
+    })
+  }</code></pre><p>单独的某一点的触发也要适当修改，不仅仅是要把立即执行和延迟处理加入，还有要把延迟处理的事件加入waittingList。</p>
+<pre><code>triggerByTime(time, triggerTime) {
+    if(this.eventList[time]) {
+      this.eventList[time].map((value, index, array) =&gt; {
+            //加入waittingList
+        if (!this.wattingList[time]) {
+          this.wattingList[time] = [triggerItem];
+        } else {
+          this.wattingList[time].push(triggerItem);
+        }
+        let triggerItem = new WaittingExecut({
+          waitTime: time - triggerTime,
+          callBack: () =&gt; {
+            value();
+            //下面这个方法是把wattingList内部的内容抛出
+            this.clearTriggerItem(time, value);
+          }
+        });
+        Compute.removeFromList(this.eventList[time], value);
+        if (!this.eventList[time].length) {
+          Compute.removeFromList(this.timeList, time);
+        }
+      });
+    }
+  }
+
+clearTriggerItem(time, value) {
+    Compute.removeFromList(this.wattingList[time], value);
+}</code></pre><p>然后就是waittingList的操作和list的操作,这里先不涉及播放器逻辑，仅仅只把方法抛出来。</p>
+<pre><code>//取消waittingList内的所有方法（回跳操作应用）
+waittingCancel() {
+  for (let i in this.wattingList) {
+    let item = this.wattingList[i];
+    item.map((value, index, array) =&gt; {
+      //取消延迟方法
+      value.abort();
+      //当然，延迟处理的方法还需要返回原先的list中
+      this.on({
+        time: i,
+        callBack: value
+      });
+    })
+  }
+}
+//立即执行waittingList的所有方法（后跳操作应用）
+waittingFinish() {
+  for (let i in this.wattingList) {
+    let item = this.wattingList[i];
+    item.map((value, index, array) =&gt; {
+      value.execut();
+    })
+  }
+}
+//立即全部执行所有list内的方法（播放结束应用）
+finishList() {
+  this.timeList.map((value, index, array) =&gt; {
+    this.triggerByTime(value);
+  })
+  waittingFinish();
+}</code></pre><h3 id="优化细节-amp-bug修复"><a href="#优化细节-amp-bug修复" class="headerlink" title="优化细节&amp;bug修复"></a>优化细节&amp;bug修复</h3><p>如上的内容在使用过程中会有一个比较严重的漏洞：</p>
+<ul>
+<li>在筛选执行内容的序列后要对所有可用方法做延迟/立即执行，在各自执行结束会对原有序列造成影响(直接使用了splice方法)，先执行的会导致数组指针向后跳一位。</li>
+<li>有可能在上一组执行序列没有完全执行结束的情况下又添加新的内容，导致在map/forEach/标准循环下当前数组内元素序号有序但是序号所对应的元素已经改变，即所谓的指针错乱。</li>
+<li>上述情况都会导致原有的消息执行顺序被打乱。</li>
+</ul>
+<h4 id="相应措施"><a href="#相应措施" class="headerlink" title="相应措施"></a>相应措施</h4><p>上述方法需要两组数据，一组为promise执行队列，一组为正在执行中的方法索引队列。</p>
+<ol>
+<li>将原有的延时/立即执行的方法封装为promise。</li>
+<li>在触发序列筛选的方法执行前，先判断promise执行队列是否清空，如果未清空则不走下一步。</li>
+<li>在独立事件promise定义好后，立即将promise塞入promise队列中，然后将方法和当前时间塞入方法索引队列（用以在全部执行完后的清楚操作）</li>
+<li>在promise队列的all方法，即所有promise都为resolve时，利用方法索引队列在原数据上对已执行内容做清除操作，之后清空promise队列和方法索引队列。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">triggerByLimit(time, limit = <span class="number">0</span>, customRule, callBack) &#123;</span><br><span class="line">  <span class="comment">// promise list not finished</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.currentList.length) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// get the current conformance information queue</span></span><br><span class="line">  <span class="keyword">this</span>.currentTime = time;</span><br><span class="line">  <span class="keyword">const</span> currentTrigger = <span class="keyword">this</span>.getTimeIndex(time + limit);</span><br><span class="line">  <span class="keyword">this</span>.lastTime = time;</span><br><span class="line">  <span class="keyword">if</span> (!currentTrigger.list.length) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.options.needReplay) &#123;</span><br><span class="line">    <span class="keyword">this</span>.lastIndex = <span class="built_in">Math</span>.max(currentTrigger.index - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// console.error(this.lastIndex, currentTrigger);</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> resultList = [].concat(<span class="keyword">this</span>.resultList);</span><br><span class="line">  <span class="keyword">this</span>.resultList = [];</span><br><span class="line">  currentTrigger.list.map(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    resultList = resultList.concat(<span class="keyword">this</span>.eventList[value]);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">if</span> (customRule) &#123;</span><br><span class="line">    resultList = customRule(resultList);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (resultList.length &gt; <span class="number">500</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.resultList = resultList.slice(<span class="number">500</span>);</span><br><span class="line">    resultList = resultList.slice(<span class="number">0</span>, <span class="number">500</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  resultList.map(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!value) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.triggerByItem(value, time);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.doingList.length) &#123;</span><br><span class="line">    <span class="comment">// const currentList = this.doingList.slice(0, 500);</span></span><br><span class="line">    <span class="built_in">Promise</span>.all(<span class="keyword">this</span>.doingList).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (!<span class="keyword">this</span>.options.needReplay) &#123;</span><br><span class="line">        <span class="keyword">this</span>.finishedTrigger(<span class="keyword">this</span>.currentList);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">this</span>.doingList = [];</span><br><span class="line">      <span class="keyword">this</span>.currentList = [];</span><br><span class="line">      <span class="keyword">if</span> (callBack) &#123;</span><br><span class="line">        callBack();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;).catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.error(e);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">triggerByItem(item, triggerTime) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!item) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> time = item.time;</span><br><span class="line">  <span class="keyword">this</span>.currentList.push(&#123;</span><br><span class="line">    time,</span><br><span class="line">    item,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> itemPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> triggerItem = <span class="keyword">new</span> WaittingExecut(&#123;</span><br><span class="line">      waitTime: time - triggerTime,</span><br><span class="line">      callBack: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        item.callBack();</span><br><span class="line">        <span class="keyword">this</span>.clearTriggerItem(time, item);</span><br><span class="line">        resolve();</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.wattingList[time]) &#123;</span><br><span class="line">      <span class="keyword">this</span>.wattingList[time] = [triggerItem];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.wattingList[time].push(triggerItem);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.warn(e);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.doingList.push(itemPromise);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/FLV%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90/">FLV结构解析</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T07:02:24.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Media/">Media</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/MPEG/">MPEG</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/FLV/">FLV</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%86%85%E5%AE%B9/">音视频内容</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <img src="/2020/06/04/FLV%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90/FLV(FLASH VIDEO).png">
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/HLS%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90/">HLS结构解析</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T06:54:51.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/Media/">Media</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/HLS/">HLS</a> }
+  </li>
+
+  <li class="meta-text">
+  { <a href="/tags/MPEG/">MPEG</a> }
+  </li>
+
+
+  </ul>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91%E5%86%85%E5%AE%B9/">音视频内容</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <img src="/2020/06/04/HLS%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90/HLS (HTTP Live Streaming).png">
+
+
+
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+
+            <footer>
+    <div>© 2020 - Jeff Sirens </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

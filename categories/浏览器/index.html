@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Jeff Sirens</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(https://avatars2.githubusercontent.com/u/22902284?s=60&amp;v=4)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Jeff Sirens</div>
+        
+            <div>Be a tackey Coder</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <ul class="Index">
+  
+    <header class='PageTitle'>
+        <h1>{ 浏览器 }</h1>
+    </header>
+  
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2020/06/04/%E2%80%9C%E4%BA%94%E2%80%9D%E5%A4%A7%E4%B8%BB%E6%B5%81%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8F%8A%E2%80%9C%E5%9B%9B%E2%80%9D%E5%A4%A7%E5%86%85%E6%A0%B8/">“五”大主流浏览器及“四”大内核</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2020-06-04T07:57:56.000Z" itemprop="datePublished">
+    2020-06-04
+  </time>
+  
+  
+  / 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a> }
+  </li>
+
+
+  </ul>
+  
+</div>
+
+    </header>
+    <div>
+      
+        <h2 id="“五”大主流浏览器及“四”大内核"><a href="#“五”大主流浏览器及“四”大内核" class="headerlink" title="“五”大主流浏览器及“四”大内核"></a>“五”大主流浏览器及“四”大内核</h2><blockquote>
+<p>现如今的五大主流浏览器已经变了，八大主流浏览器为 IE，火狐，chrome，Safari，QQ浏览器，UC浏览器，搜狗浏览器等。而内核也从之前的四大变为了三大三小: 火狐的Gecko，chrome的Blink，Safari的Webkit，QQ基于Webkit深度开发的X5，UC基于Webkit开发的U3，夸克基于Webkit开发的AI内核。</p>
+</blockquote>
+<p>注: 华为与UC达成合作，内置浏览器均为UC内核的轻量化版本；OPPO内置浏览器内核在近两年会进行基于Webkit的独立研发和移植。</p>
+<ol>
+<li>IE浏览器<ul>
+<li>老牌浏览器，ie8, 9, 10, 11分别代表了不同兼容性的指标，可以说是当前浏览器环境水桶中最短的那一块板，这里兼容性不说可以通过babel，css可以变相支持的能力。</li>
+<li>ie8兼容，主要考虑的是大多数 css 与 部分 attribute 不支持。例如: background不支持连写，border-radius 不支持，css3, html5 不支持，分辨率查询不支持，canvas不支持等。</li>
+<li>ie9 兼容，主要是在 文件处理 和 cros 请求上。例如: FileReader等相关api， 跨域请求不支持添加header等。</li>
+<li>ie10兼容，主要是二进制文件处理，原生拖拽事件支持不完善等</li>
+<li>ie11兼容，ie11已经与chrome在语法支持上十分接近了，但还是有不支持的内容，这块要分两个情况解释<ul>
+<li>win7升级的ie11依旧沿用的是老的系统，所以除了在ui和部分语法上支持更到位外，和win10 ie11相比，不支持Media Source Extensions，即不支持解码标准h.264标准流。这里的主要原因是，win7 不支持 IE 通过 CPU 控制 GPU 解析视频。</li>
+<li>win10 ie11 不兼容 webgl2.0，不支持本地下载 createObjectURL，svg 兼容性问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>现阶段微软在 Edge 浏览器 放弃自家内核使用了 chromium 内核。至此，针对 IE 的后续兼容性方法探究终于可以告一段落。</p>
+<ol start="2">
+<li><p>Opera浏览器</p>
+<ul>
+<li>已经沿用chrome内核，放弃自研，opera mini</li>
+</ul>
+</li>
+<li><p>Safari浏览器</p>
+<ul>
+<li>Ummmm,最具有个性的浏览器，可以这么说。在3D渲染方面比 chrome 更逼近实际现象。</li>
+<li>天然支持Hls视频播放。</li>
+<li>mac下调试利器，但是对二进制和特殊文件请求做不到预览功能，可能还需要借助抓包软件</li>
+<li>插件系统不完善</li>
+</ul>
+</li>
+<li><p>Firefox浏览器</p>
+<ul>
+<li>知之甚少，除了调试以外没发现和 chrome 在结果上有很大差异。</li>
+</ul>
+</li>
+<li><p>Chrome浏览器</p>
+<ul>
+<li>行业标杆，在兼容性方面不多说</li>
+<li>调试模式下的多媒体显示结果和真机存在较大差异</li>
+<li>大多数情况会先于W3C标准开发内容倒逼组织引用内容。。有点仗势欺人的错觉</li>
+</ul>
+</li>
+<li><p>大多数浏览器厂商的内核会进行沿用</p>
+<ul>
+<li>猎豹浏览器内核：IE+Chrome双内核；</li>
+<li>搜狗、遨游浏览器内核：Trident（兼容模式）+Webkit（高速模式）；</li>
+<li>世界之窗内核、百度浏览器、2345浏览器内核：以前是IE内核，现在也是IE+Chrome双内核；</li>
+</ul>
+</li>
+<li><p>QQ浏览器</p>
+<ul>
+<li>使用基于 webkit 二开的 x5内核</li>
+<li>新增视频抓取，广告推广等。</li>
+</ul>
+</li>
+<li><p>360浏览器</p>
+<ul>
+<li>IE+webkit(自研)；</li>
+<li>新增UA伪装，视频抓取等。</li>
+</ul>
+</li>
+<li><p>UC，夸克内核：</p>
+<ul>
+<li>IE+webkit(自研)；</li>
+<li>新增广告拦截，信息抓取，智能预读等。做相关开发需要小心，谨防敏感词屏蔽。</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+</article>
+
+    </li>
+  
+</ul>
+
+
+            <footer>
+    <div>© 2020 - Jeff Sirens </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

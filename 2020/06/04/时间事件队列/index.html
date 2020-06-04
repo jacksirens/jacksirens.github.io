@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>时间事件队列 | Jeff Sirens</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(https://avatars2.githubusercontent.com/u/22902284?s=60&amp;v=4)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Jeff Sirens</div>
+        
+            <div>Be a tackey Coder</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>时间事件队列</h1>
+    </header>
+
+    <section>
+      <h1 id="时间事件队列"><a href="#时间事件队列" class="headerlink" title="时间事件队列"></a>时间事件队列</h1><p>在ESLive的直播和直播回放中撇开播放器的主播放逻辑（换流刷新/swf和hls区分）和大多数控件的功能（全屏/直播清晰度/尺寸比例设置）以外，比较主要的就是信令同步/回放的操作同步。这里就需要做一个比较准确的时间事件队列的维护。</p>
+<h2 id="设计初"><a href="#设计初" class="headerlink" title="设计初"></a>设计初</h2><p>业务需求：需要在既定时间执行相应的操作，既定时间可以在具体业务中独自设立，需要保证其精准度</p>
+<p>既然要做一个时间事件队列，那么需要做的首先是三个功能点，队列内事件的添加，事件执行，和队列内抛出。</p>
+<p>但是在这三个方法之前，需要首先考虑的事情：</p>
+<ul>
+<li>在一个播放的时间轴中，事件的执行应该是按时间顺序依次执行的。</li>
+<li>播放器的获取时间的方法拿到的事当前播放的时间点，（原生video标签获取的速度大约是1s内4-5次，而flash可以通过自定义事件随意抛出，项目中是3s一次）大概率不会与事件添加的时间点一致，且在直播中会有换流操作/播放器可以直接跳转时间点，会跳过多个时间点</li>
+<li>在获取精准度较低的情况下，可能出现同一个时间点注册多个方法的情况</li>
+</ul>
+<h3 id="依次处理"><a href="#依次处理" class="headerlink" title="依次处理"></a>依次处理</h3><ul>
+<li><p>依次执行的点，需要做的是要保存时间数据和具体方法内容，</p>
+<pre><code>let List = {
+    event: {
+        1: () =&gt; console.log(1), 
+        2: () =&gt; console.log(2), 
+        3: () =&gt; console.log(3)
+    }
+};
+//这种数据格式可以完成时间、方法都保存的功能
+
+//执行时间方法就只需要
+list.event[time]();</code></pre></li>
+<li><p>播放器本身拿到的时间点与注册事件的不一致/跳过多个时间事件的点，其实就是需要筛选出小于等于当前时间点的所有时间，对象的形式遍历起来操作比较麻烦，所以，需要另外一个参照物去取一个符合条件的时间点的集合。so，感觉一个数据结构已经无法满足这个需求了：</p>
+<pre><code>let List = {
+    time: [1, 2, 3]
+    event: {
+        1: () =&gt; console.log(1), 
+        2: () =&gt; console.log(2), 
+        3: () =&gt; console.log(3)
+    }
+};
+//这种数据格式的要求就是time设个数据必须保持有序状态，衍生出来的需求就是在注册事件的时候需要让time的数据一直保持有序。这里让setList返回当前数据所在的下标是为了方便后续获取符合条件的时间区间。
+
+setList(list, value) {
+    if (isArray(list)) {
+      if (!list.length) {
+        list.push(value);
+        return 1;
+      }
+      for (var i = 0; i &lt; list.length; i++) {
+        if (list[i] &gt; value) {
+          list.splice(i, 0, value);
+          return i + 1;
+        } else if (i == list.length - 1) {
+          list.push(value);
+          return i + 1;
+        }
+      }
+    }
+}
+
+//相应的触发也需要作出适当调整（篇幅较长）
+
+getTimeIndex(time) {
+    //这里做深拷贝是为了不让视频时间污染原有的时间点。感觉上可以修改setList避开这里的深拷贝
+    let timeCurrentList = Compute.cloneObj(this.timeList);
+    let eventIndex = Compute.setList(timeCurrentList, time);
+    if (eventIndex &gt;= 0) {
+      return {
+        index: eventIndex,
+        list: timeCurrentList.slice(0, eventIndex)
+      };
+    }
+  return {
+    index: -1,
+    list: []
+  }
+}
+
+triggerByLimit(time) {
+    let currentTrigger = getTimeIndex(time);
+    if(!currentTrigger.index) {
+      return;
+    }
+    list.time.map((value) =&gt; {
+      triggerByTime(value);
+    })
+  }
+
+triggerByTime(time) {
+    if(this.list.event[time]) {
+      this.list.event[time]();
+    }
+}
+
+//在这里就衍生出一个细节，已经执行过的方法不应该被多次执行，这里就需要把已经执行过的方法抛出，
+
+removeFromList(list, value) {
+    if (this.isArray(list)) {
+      if (list.indexOf(value) &gt;= 0) {
+        list.splice(list.indexOf(value), 1);
+        return list;
+      }
+    }
+  }
+
+  //执行完方法后需要做抛出操作
+  delete list.event[time];
+  removeFromList(list.time, time);</code></pre></li>
+</ul>
+<ul>
+<li><p>出现同一个时间点注册多个方法的问题，依次衍生出两个小问题，一个是相同时间的事件添加，原先对象的形式后加的事件会把之前的方法覆盖，所以作出适当调整：</p>
+<pre><code>let List = {
+    time: [1, 2, 3]
+    event: {
+        1: [
+            () =&gt; console.log(1-1),
+            () =&gt; console.log(1-2)
+        ], 
+        2: [
+            () =&gt; console.log(2)
+        ], 
+        3: [
+            () =&gt; console.log(3-1),
+            () =&gt; console.log(3-2),
+            () =&gt; console.log(3-3),
+        ]
+    }
+};
+//这样就能记录同一个时间点的方法。</code></pre><p>  由这个点衍生出来的一个细节就是，在time列表添加的时候，遇到相同时间点的事件其实没有必要多次录入。所以对setList作出细微调整</p>
+<pre><code>setList(list, value) {
+    if (this.isArray(list)) {
+      if (list.indexOf(value) &gt;= 0) {
+        return list.indexOf(value) + 1;
+      }
+      if (!list.length) {
+        list.push(value);
+        return 1;
+      }
+      for (var i = 0; i &lt; list.length; i++) {
+        if (list[i] &gt; value) {
+          list.splice(i, 0, value);
+          return i + 1;
+        } else if (i == list.length - 1) {
+          list.push(value);
+          return i + 1;
+        }
+      }
+    }else {
+      return 0;
+    }
+  }
+
+       //相应的，触发也要做出适当修改，原先的this.list.event[time]();也要修改，抛出也要修改。。。。
+       this.eventList[time].map((value) =&gt; {
+     value();
+     removeFromList(this.eventList[time], value);
+    if (!this.eventList[time].length) {
+      removeFromList(this.timeList, time);
+      delete this.eventList[time];
+    }
+ });</code></pre></li>
+</ul>
+<p>这样的话，需要事件列表的格式出来了，注册行为也差不多就出来了：</p>
+<pre><code>setTimeList(time) {
+    setList(this.list.time, time);
+  }
+
+on(event) {
+    this.setTimeList(event.time);
+    if (!this.eventList[event.time]) {
+      this.eventList[event.time] = [event.callBack];
+    }else {
+      this.eventList[event.time].push(event.callBack);
+    }
+}</code></pre><h2 id="精准度-amp-回跳功能"><a href="#精准度-amp-回跳功能" class="headerlink" title="精准度&amp;回跳功能"></a>精准度&amp;回跳功能</h2><p>例如：当下注册了一个1.0秒应该执行的方法，但是video标签时间戳跑的时候是获取到的当前时间是0.9s, 1.5s的顺序，或者在flash中执行的抛出的时间断可能是3s一次，例如 0.7s, 3.5s，这样事件按照上面的逻辑分别是在1.5s和3.5s才被触发，分别延迟了0.5s和2.5s。</p>
+<p>这种结果实话不应该出现，所以：</p>
+<ul>
+<li>筛选符合条件的时间段可以稍长于当前时间</li>
+<li>把当前时间到稍长时间这一区间的方法做一个延迟处理（setTimeout）</li>
+</ul>
+<p>回跳案例：当下注册了一个10.0秒应该执行的方法，但是video标签时间戳跑的时候是获取到的当前时间是9.5s, 10.1s的顺序，然后稍长时间设定的1s，这样事件在在9.5s被注册进队列内。然后在9.8s回跳至3s，但是已经延时处理的内容并没有取消，这样本应该在10s出现的方法在3.2s还是照常执行。</p>
+<p>所以。。在回跳方法中还要操作那些延迟处理的方法集合，这样就需要引入一个等待执行的事件队列。</p>
+<pre><code>waittingList = {
+    1: [
+        () =&gt; console.log(1),
+        () =&gt; console.log(2)
+    ]
+}</code></pre><p>当然，同样的，setTimeout也要做处理。这里直接放一个小工具，方便操作。</p>
+<pre><code>class WaittingExecut{
+  constructor(options) {
+    this.callBack = options.callBack;
+    this.waitTime = options.waitTime;
+    this.init();
+  }
+
+  init() {
+    if (this.waitTime &gt; 0) {
+      this.waitting = setTimeout(() =&gt; {
+        this.callBack();
+        this.doneFlag = true;
+      },this.waitTime);
+    }else {
+      this.callBack();      
+      this.doneFlag = true;
+    }
+  }
+
+  execut() {
+    if(!this.doneFlag) {
+      this.callBack();
+      clearTimeout(this.waitting);
+      this.doneFlag = true;
+    }
+  }
+
+  abort() {
+    if(!this.doneFlag) {
+      clearTimeout(this.waitting);
+      this.doneFlag = true;
+    }
+  }
+
+  reset() {
+    if(!this.doneFlag) {
+      clearTimeout(this.waitting);
+    }
+    this.doneFlag = false;
+    this.init();
+  }
+
+  refresh(callBack, waitTime) {
+    this.abort();
+    this.callBack = callBack;
+    this.waitTime = waitTime;
+    this.init();
+  }
+}
+
+export default WaittingExecut;</code></pre><p>这样就可以比较方便的对延时行为进行设置，取消，立即执行，重启，重新设定这些操作了。</p>
+<p>这样把上述细节再处理一下，首先，延时任务要出现，就要有一个limit的概念。</p>
+<p>所以，筛选需要的事件要做适当修改</p>
+<pre><code>triggerByLimit(time, limit) {
+    //要把需要的事件稍稍延长，当然这个limit可以当作对象的固定属性，这里可能按照实际获取的时间间隔为参照更好一些，所以仅仅当作参数方法使用。
+    let currentTrigger = this.getTimeIndex(time + limit);
+    if(!currentTrigger.index) {
+      return;
+    }
+    currentTrigger.list.map((value, index, array) =&gt; {
+        这里也需要把当前时间给引入，方便做延时处理。
+      this.triggerByTime(value, time);
+    })
+  }</code></pre><p>单独的某一点的触发也要适当修改，不仅仅是要把立即执行和延迟处理加入，还有要把延迟处理的事件加入waittingList。</p>
+<pre><code>triggerByTime(time, triggerTime) {
+    if(this.eventList[time]) {
+      this.eventList[time].map((value, index, array) =&gt; {
+            //加入waittingList
+        if (!this.wattingList[time]) {
+          this.wattingList[time] = [triggerItem];
+        } else {
+          this.wattingList[time].push(triggerItem);
+        }
+        let triggerItem = new WaittingExecut({
+          waitTime: time - triggerTime,
+          callBack: () =&gt; {
+            value();
+            //下面这个方法是把wattingList内部的内容抛出
+            this.clearTriggerItem(time, value);
+          }
+        });
+        Compute.removeFromList(this.eventList[time], value);
+        if (!this.eventList[time].length) {
+          Compute.removeFromList(this.timeList, time);
+        }
+      });
+    }
+  }
+
+clearTriggerItem(time, value) {
+    Compute.removeFromList(this.wattingList[time], value);
+}</code></pre><p>然后就是waittingList的操作和list的操作,这里先不涉及播放器逻辑，仅仅只把方法抛出来。</p>
+<pre><code>//取消waittingList内的所有方法（回跳操作应用）
+waittingCancel() {
+  for (let i in this.wattingList) {
+    let item = this.wattingList[i];
+    item.map((value, index, array) =&gt; {
+      //取消延迟方法
+      value.abort();
+      //当然，延迟处理的方法还需要返回原先的list中
+      this.on({
+        time: i,
+        callBack: value
+      });
+    })
+  }
+}
+//立即执行waittingList的所有方法（后跳操作应用）
+waittingFinish() {
+  for (let i in this.wattingList) {
+    let item = this.wattingList[i];
+    item.map((value, index, array) =&gt; {
+      value.execut();
+    })
+  }
+}
+//立即全部执行所有list内的方法（播放结束应用）
+finishList() {
+  this.timeList.map((value, index, array) =&gt; {
+    this.triggerByTime(value);
+  })
+  waittingFinish();
+}</code></pre><h3 id="优化细节-amp-bug修复"><a href="#优化细节-amp-bug修复" class="headerlink" title="优化细节&amp;bug修复"></a>优化细节&amp;bug修复</h3><p>如上的内容在使用过程中会有一个比较严重的漏洞：</p>
+<ul>
+<li>在筛选执行内容的序列后要对所有可用方法做延迟/立即执行，在各自执行结束会对原有序列造成影响(直接使用了splice方法)，先执行的会导致数组指针向后跳一位。</li>
+<li>有可能在上一组执行序列没有完全执行结束的情况下又添加新的内容，导致在map/forEach/标准循环下当前数组内元素序号有序但是序号所对应的元素已经改变，即所谓的指针错乱。</li>
+<li>上述情况都会导致原有的消息执行顺序被打乱。</li>
+</ul>
+<h4 id="相应措施"><a href="#相应措施" class="headerlink" title="相应措施"></a>相应措施</h4><p>上述方法需要两组数据，一组为promise执行队列，一组为正在执行中的方法索引队列。</p>
+<ol>
+<li>将原有的延时/立即执行的方法封装为promise。</li>
+<li>在触发序列筛选的方法执行前，先判断promise执行队列是否清空，如果未清空则不走下一步。</li>
+<li>在独立事件promise定义好后，立即将promise塞入promise队列中，然后将方法和当前时间塞入方法索引队列（用以在全部执行完后的清楚操作）</li>
+<li>在promise队列的all方法，即所有promise都为resolve时，利用方法索引队列在原数据上对已执行内容做清除操作，之后清空promise队列和方法索引队列。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">triggerByLimit(time, limit = <span class="number">0</span>, customRule, callBack) &#123;</span><br><span class="line">  <span class="comment">// promise list not finished</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.currentList.length) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// get the current conformance information queue</span></span><br><span class="line">  <span class="keyword">this</span>.currentTime = time;</span><br><span class="line">  <span class="keyword">const</span> currentTrigger = <span class="keyword">this</span>.getTimeIndex(time + limit);</span><br><span class="line">  <span class="keyword">this</span>.lastTime = time;</span><br><span class="line">  <span class="keyword">if</span> (!currentTrigger.list.length) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.options.needReplay) &#123;</span><br><span class="line">    <span class="keyword">this</span>.lastIndex = <span class="built_in">Math</span>.max(currentTrigger.index - <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">// console.error(this.lastIndex, currentTrigger);</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> resultList = [].concat(<span class="keyword">this</span>.resultList);</span><br><span class="line">  <span class="keyword">this</span>.resultList = [];</span><br><span class="line">  currentTrigger.list.map(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    resultList = resultList.concat(<span class="keyword">this</span>.eventList[value]);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">if</span> (customRule) &#123;</span><br><span class="line">    resultList = customRule(resultList);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (resultList.length &gt; <span class="number">500</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.resultList = resultList.slice(<span class="number">500</span>);</span><br><span class="line">    resultList = resultList.slice(<span class="number">0</span>, <span class="number">500</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  resultList.map(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!value) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.triggerByItem(value, time);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.doingList.length) &#123;</span><br><span class="line">    <span class="comment">// const currentList = this.doingList.slice(0, 500);</span></span><br><span class="line">    <span class="built_in">Promise</span>.all(<span class="keyword">this</span>.doingList).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (!<span class="keyword">this</span>.options.needReplay) &#123;</span><br><span class="line">        <span class="keyword">this</span>.finishedTrigger(<span class="keyword">this</span>.currentList);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">this</span>.doingList = [];</span><br><span class="line">      <span class="keyword">this</span>.currentList = [];</span><br><span class="line">      <span class="keyword">if</span> (callBack) &#123;</span><br><span class="line">        callBack();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;).catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.error(e);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">triggerByItem(item, triggerTime) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!item) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> time = item.time;</span><br><span class="line">  <span class="keyword">this</span>.currentList.push(&#123;</span><br><span class="line">    time,</span><br><span class="line">    item,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> itemPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> triggerItem = <span class="keyword">new</span> WaittingExecut(&#123;</span><br><span class="line">      waitTime: time - triggerTime,</span><br><span class="line">      callBack: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        item.callBack();</span><br><span class="line">        <span class="keyword">this</span>.clearTriggerItem(time, item);</span><br><span class="line">        resolve();</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.wattingList[time]) &#123;</span><br><span class="line">      <span class="keyword">this</span>.wattingList[time] = [triggerItem];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.wattingList[time].push(triggerItem);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;).catch(<span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.warn(e);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">this</span>.doingList.push(itemPromise);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-06-04T07:03:24.000Z" itemprop="datePublished">
+              2020-06-04
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2020 - Jeff Sirens </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>

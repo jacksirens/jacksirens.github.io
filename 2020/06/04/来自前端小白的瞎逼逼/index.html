@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>来自前端小白的瞎逼逼 | Jeff Sirens</title>
+  
+  
+  
+  <!--link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css"-->
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/highlight.js/9.10.0/styles/github-gist.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+<div class="Shell">
+    <aside class='SideBar'>
+    <section class='avatar' style="background-image: url()">
+        <div class='av-pic' style="background-image: url(https://avatars2.githubusercontent.com/u/22902284?s=60&amp;v=4)">
+        </div>
+    </section>
+    <section class='menu'>
+        <div>Jeff Sirens</div>
+        
+            <div>Be a tackey Coder</div>
+        
+        <ul>
+          
+            <a href="/" class="Btn">
+              <li>Home</li>
+            </a>  
+          
+            <a href="/archives/" class="Btn">
+              <li>Archive</li>
+            </a>  
+          
+        </ul>
+    </section>
+    <section class="media">
+        
+    </section>
+</aside>
+
+    <div class="container">
+        <div data-pager-shell>
+            <div>
+  <article class='ContentView'>
+    <header class='PageTitle'>
+        <h1>来自前端小白的瞎逼逼</h1>
+    </header>
+
+    <section>
+      <h2 id="前端工程化和架构"><a href="#前端工程化和架构" class="headerlink" title="前端工程化和架构"></a>前端工程化和架构</h2><blockquote>
+<p>什么叫工程化，大概就是能有个方法，让一大堆人，有组织有纪律地一起干活，目的是提高效率，保证质量。</p>
+</blockquote>
+<h3 id="在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。"><a href="#在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。" class="headerlink" title="在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。"></a>在日常的开发流程中，必然少不了需求分析，设计，code，test，release，以及代码维护和必要的技术支持。</h3><p>上述的各个环节组合在一起形成了一个正常的开发模型，可能用不同的模式迭代会有细微的不同。</p>
+<p>上面所说的环节并非串行关系也没有互斥性，但是也没有绝对的并行关系，可以在code的时候也会对代码做维护，为了保证项目时间紧凑，产品总是领先开发一个迭代的设计等等</p>
+<p>工程化和架构本身目的是一致的：提高开发效率，这里的开发效率不单单指提升编码效率，而是提升整个日常开发系统的执行效率。</p>
+<p>而在细节上架构和工程化又有些许不同：</p>
+<ul>
+<li>架构： 侧重于系统的抽象、拆分、组织方式等的调整，使用不同顺序/层次的“构”组成“架”来支撑起一个项目的良性发展</li>
+<li>工程化： 侧重在 编码-&gt;测试-&gt;维护 环节提高生产效率，更注重项目在“架”通用方法的具体实现上</li>
+</ul>
+<p>大漠说过有意思的一句话：</p>
+<pre><code>架构
+构
+就是公司客观环境下的纷繁业务
+架呢
+是支持这些业务所用的技术手段
+也就是对公司现有业务情况的认知
+在这个之上
+来使用不同的架支撑构
+给出更符合构内在联系的架</code></pre><h3 id="工程化"><a href="#工程化" class="headerlink" title="工程化"></a>工程化</h3><p>工程化解决的核心问题： 开发和部署</p>
+<p>而面向开发角度，要解决的问题在于：</p>
+<ul>
+<li>提高代码开发效率</li>
+<li>降低维护难度</li>
+</ul>
+<p>解决方案的话，暂时想到以下几点：</p>
+<ul>
+<li>制定团队开发规范，提高团队协作能力</li>
+<li>模块化开发，利用分治思想让代码不再强依赖于环境</li>
+</ul>
+<p>而部署方面：</p>
+<ul>
+<li>代码审核</li>
+<li>压缩打包</li>
+<li>简化各版本发布固有流程</li>
+<li>单元测试</li>
+</ul>
+<p>要解决上述问题，需要的是编译，打包工具和一些脚本语言辅助</p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><p>架构本身是一种可变的模式，要根据当前技术人员和项目需求选出最适应当下项目的细节与规范。</p>
+<p>比如在工程化提到的开发规范和模块化，可能在工程化本身只是一个虚的概念，可能只知道需要使用模块化，模块化能做分治，开发规范也不详尽，可能只是一个通用的eslint，完全没有考虑当下的项目是不是需要代码约束中的某几条细节。</p>
+<p>而在架构设计中，需要较为明确的给出在当前项目开发过程中，较为推荐的code模式，对业务点进行拆分，把错综复杂的枢纽逻辑分治到各个独立且不相关的业务中，并且对相应代码要求给出一个全面的可执行准则。</p>
+<p>所以，架构更倾向于对项目细节和团队人员协调的把控，但是并不是说架构和工程化处在一个对立面，在谈区别的时候，就提到架构是利用更好的“构”来支撑起项目需要的“架”，而工程化更专注于提升“架”的效率，所以有一定的包含关系。</p>
+<h2 id="设计模式有什么优势"><a href="#设计模式有什么优势" class="headerlink" title="# 设计模式有什么优势"></a># 设计模式有什么优势</h2><blockquote>
+<p>首先，设计模式并不是需求的解决办法。</p>
+</blockquote>
+<blockquote>
+<p>其次，设计模式并不能带来代码执行效率上的提升，某种意义上来说还占用了额外的空间（状态对象，订阅发布器），增加了查找，订阅，发布，执行的中间逻辑。</p>
+</blockquote>
+<ul>
+<li>设计模式是什么</li>
+</ul>
+<p>编写代码的一种套路，设计模式是总结出来的一种编写形式。这种东西不是结果正确与否就能写结论的。</p>
+<ul>
+<li>那么，设计模式到底能干什么。。</li>
+</ul>
+<p>首先，提升开发者的效率：</p>
+<ol>
+<li>在开发过程中，好的代码职责分配能让多个人对同一个项目进行功能开发且不出现代码相互污染，且每个开发人员做出来的单一功能都具备高聚合低耦合且与外界隔离的性质，即职责单一。与外界隔离是为了保证这一组间内的执行不受外界干扰，可以保证其功能在执行状态下的稳定。 </li>
+<li>在维护过程中，当把项目做的越大、越复杂、算法越扭曲、界面越华丽、尺寸已经大到觉得不学习新的方法论就肯定会让代码失控的时候，设计模式的套路就可以整理出清晰的脉络。</li>
+<li>强复用性，因为基本上过了设计模式的代码都是已经独立封装好了的，这样的代码在需要的场景下可以通过统一接口的形式用较低的时间成本进行对接。</li>
+</ol>
+<p>可能还有，装逼或者因为某种工程师的信仰或洁癖。。。</p>
+<p>所以，综上所述，不是所有情况都适合使用设计模式的（当然强行改没人拦着）</p>
+<ol>
+<li>已经成型(交付)且没有bug/需求的项目不需要通过设计模式修改。</li>
+<li>功能单一且复杂度不高的情况下不适用</li>
+<li>任何某些人觉得这样就挺好的代码（当然另一些人不这么认为）</li>
+</ol>
+<p>设计模式主要作用： 拆分模块，划分职责。</p>
+<p>面向对象的单一职责原则，大到一个系统、模块的职责边界划分，小到一个类、一个方法的职责。 </p>
+<p>划分职责有什么优势： 每一个模块只做自己职责内的事情，不必管理职责外的内容。这样能保证单一模块的纯净，即稳定，单一。且后续其它功能的扩展不需要对其它模块做任何处理。待后续成型后也可以按照开闭原则再次提炼让其功能保证稳定。</p>
+<p>所以，引用知乎大神的说法：</p>
+<ul>
+<li>简单的功能或演示性的程序不要考虑设计模式</li>
+<li>关注问题而非解决方案。也就是说设计模式里只是一套通用的范式，和问题本身并无太大关联，可以参考设计模式的职责划分对当前问题的处理方法进行调整，减小阅读的成本。</li>
+<li>关注重用而非设计模式。因为设计模式的应用很多情况下是基于模块化，目的就是为了满足重用和较好的可读性，如果代码本身已经能达到一个较好的重用性，在不考虑可读性的情况下可以不用考虑设计模式的调整。</li>
+<li>在支持函数式编程的语言里避免使用设计模式。如前所述，设计模式很多时候是以面向对象为基础的，面向对象本身的劣势就是占用空间，而高阶函数很多情况下是比面向对象更有效的执行方式。</li>
+<li>能用简单的模式解决的问题不要引入复杂的模式</li>
+<li>已经有解决方案的情况下不要硬套设计模式，设计模式不是一切</li>
+<li>正确认识些暂时无法理解的模式，这些模式代表着一类问题，很多时候使用第三方库是更好的选择</li>
+<li>看轻设计模式，它们只能解决一小部分问题</li>
+</ul>
+<p>最后，以解决问题为最终目的。当项目体积越来越大时，觉得现有代码太过浑浊就可以使用设计模式优化结构。</p>
+<h2 id="业务抽象与代码抽象"><a href="#业务抽象与代码抽象" class="headerlink" title="业务抽象与代码抽象"></a>业务抽象与代码抽象</h2><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>业务抽象可能说上去很玄乎，但是就是将用户的需求通过代码逻辑这一载体，变成一套含有既定规则的工具，这一个工具泛指所有软件（后台/前台/游戏软件/外挂 etc.）</p>
+<p>在前端中，工具基本上是一个依赖于web-view,浏览器这一大环境下的可视化操作界面，程序员通过代码赋予这个界面外观(html + css)，操作逻辑(js),然后用户在这一套操作逻辑下进行基本的操作。</p>
+<p>而代码抽象，就是下面的这些东西。</p>
+<h3 id="如何拆解需求"><a href="#如何拆解需求" class="headerlink" title="如何拆解需求"></a>如何拆解需求</h3><p>套用那标准的5个问句，可以初步完成一个需求到功能点的转化：</p>
+<ul>
+<li>who: 谁去让这个代码段真正运行，是用户操作，还是加载后自执行。</li>
+<li>what: 操作什么，每一段代码都是有意义的，前端代码无论做多少处理，最终都是为UI界面/后台数据 服务的，所以，要操作数据，控制dom，又或者是控制浏览器做些什么。</li>
+<li>when: 什么时候执行，立即执行，或者是延迟执行，又或者是异步请求的回调。</li>
+<li>where: 操作后的内容去向，是前往下一个功能点，或是仅展示行为。</li>
+<li>how: 如何操作，是操作class，还是操作style，还是只是format数据，计算结果，这个步骤可以考虑使用第三方插件来减少开发成本。</li>
+</ul>
+<p>如果上述解释不了，就再细化拆分。</p>
+<h3 id="细节"><a href="#细节" class="headerlink" title="细节"></a>细节</h3><p>全文都跟着一个功能点走，拖拽功能。（ps: 代码为了节省时间，网上东拼西凑的，能懂这个意思就行）</p>
+<p>抽象在我看来其实也分类别，比如正常抽象就是理解需求，完成需求。写出类似面条文这样的代码，这样的代码功能或单一或混乱，和当前场景基本处于一个强耦合状态（请求路由不可改，元素选择不可改，或强依赖于某些页面上的既定数据），基本不能复用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'.js-drag'</span>).on(<span class="string">'mousedown'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> event = ev || <span class="built_in">window</span>.event;</span><br><span class="line">   <span class="keyword">var</span> disX = event.clientX - $(<span class="string">'.js-drag'</span>).offset().left;</span><br><span class="line">   <span class="keyword">var</span> disY = event.clientY - $(<span class="string">'.js-drag'</span>).offset().top;</span><br><span class="line">   <span class="built_in">document</span>.onmousemove = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</span><br><span class="line">   		<span class="keyword">var</span> eventMove = e || <span class="built_in">window</span>.event;</span><br><span class="line">	    $(<span class="string">'.js-drag'</span>)[<span class="number">0</span>].style.left = (eventMove.clientX - disX) + <span class="string">'px'</span>;</span><br><span class="line">	    $(<span class="string">'.js-drag'</span>)[<span class="number">0</span>].style.top = (eventMove.clientY - disY) + <span class="string">'px'</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	    </span><br><span class="line">	<span class="built_in">document</span>.onmouseup = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	    <span class="built_in">document</span>.onmousemove = <span class="literal">null</span>;</span><br><span class="line">	    <span class="built_in">document</span>.onmouseup = <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>如上所示， 上面的功能完全依赖于[class=”js-drag”]这一元素，如果还有一个[class=”js-drag-1”]的元素也要做拖拽，就必须把所有代码复制一遍然后修改其中的部分代码（这里特指元素选择），这样把类似的功能重复执行多次在项目中是很不可取的，这样的确定功能性的代码还可以接受，但是：</p>
+<p>这里举个🌰：</p>
+<p>假如程序中有10个请求类型的代码，<br>在项目中的请求方式都是</p>
+<pre><code>$.post(&apos;&apos;, (res) =&gt; {
+    var data = JSON.parse(res.body);
+    ......
+});</code></pre><p>假如后端为了节省传输内容而把请求格式从json转为了key:value|key:value 这样的形式。那么，我们是不是就要在10个位置对这个JSON.parse(res.body)做一次修改，假如有20个呢，100个。。。</p>
+<p>请求类型的代码仅仅是后端调整了一下所有接口数据的组合形式就要前端把十余个甚至数十个接口重新做数据的format行为，是项目进度的极大浪费。所以需要把经常出现的相同逻辑做一次合并。</p>
+<p>比如上述场景下，我只需要在全局的文件下声明一个请求方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params">url, callback</span>) </span>&#123;</span><br><span class="line">	$.post(url, (res) =&gt; &#123;</span><br><span class="line">		<span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(res.body);</span><br><span class="line">		<span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(<span class="string">'&#123;'</span> + res.body.split(<span class="string">'|'</span>).join(<span class="string">','</span>) + <span class="string">'&#125;'</span>); <span class="comment">// 只需修改一处就可以调整所有使用这个方法请求接口的代码了。</span></span><br><span class="line">		callback(data);</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用只需要使用getData就行</span></span><br><span class="line">getData(<span class="string">'...'</span>, (data) =&gt; &#123;</span><br><span class="line">	....</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当然上述方法也不是最优解，比如路由拼接，header修改，一些必要但是和具体业务无关的token数据传递都不应该出现在业务逻辑中。至于怎么做相信大佬们都有各自的做法。</span></span><br></pre></td></tr></table></figure>
+
+<p>所以在某些重复使用某一功能的场景下，就需要对某一个功能做封装</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Drag</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.obj = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">    <span class="keyword">this</span>.disX = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">this</span>.disY = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Drag.prototype.init = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">this</span>.obj.onmousedown = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> event = ev || <span class="built_in">window</span>.event;</span><br><span class="line">        self.mouseDown(event);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Drag.prototype.mouseDown = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">this</span>.disX = event.clientX - <span class="keyword">this</span>.obj.offsetLeft;</span><br><span class="line">    <span class="keyword">this</span>.disY = event.clientY - <span class="keyword">this</span>.obj.offsetTop;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">document</span>.onmousemove = <span class="function"><span class="keyword">function</span>(<span class="params">ev</span>)</span>&#123;</span><br><span class="line">        self.mouseMove();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">document</span>.onmouseup = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        self.mouseUp();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Drag.prototype.mouseMove = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.obj.style.left = (event.clientX - <span class="keyword">this</span>.disX) + <span class="string">'px'</span>;</span><br><span class="line">    <span class="keyword">this</span>.obj.style.top = (event.clientY - <span class="keyword">this</span>.disY) + <span class="string">'px'</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Drag.prototype.mouseUp = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">document</span>.onmousemove = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">document</span>.onmouseup = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样封装好后就能通过简单调用完成对一个元素的拖拽绑定了</p>
+<p>but，这样就结束了么？</p>
+<p>我们知道，拖拽的应用场景一般是，进度拖拽，元素相对于窗口的拖拽，让元素不遮挡用户操作，所以，在这段代码逻辑中，其实隐含着很多的可扩展代码，比如，拖拽的限制条件（拖拽元素的限制范围，达到/超出限制后的反应，以及 按下鼠标后/拖拽过程中/松开鼠标后 需要执行的UI/逻辑操作）</p>
+<p>在这里的应用场景有，音视频的音量控制(对音量的实时控制)，拖拽后的吸边操作(达到/超出限制后的吸边操作)，0-100%的进度控制(不能超过限制范围)</p>
+<p>当然，为什么只能是web端使用，手机端呢？</p>
+<p>这样就要考虑用UA做机型适配和event.touches[0].clientX/event.clientX这些值的选取了。</p>
+<h4 id="可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前-后挂上可选或可填充的内容，达到一定的扩展性。"><a href="#可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前-后挂上可选或可填充的内容，达到一定的扩展性。" class="headerlink" title="可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前/后挂上可选或可填充的内容，达到一定的扩展性。"></a>可以这么说，对业务的抽象就是了解需求，深入需求，把需求拆解为功能点，再将功能点转化为代码的一种实现方式，对代码的抽象就是把一段固定的逻辑去掉对某一特定场景下的属性的依赖。并在各个关键的逻辑前/后挂上可选或可填充的内容，达到一定的扩展性。</h4><p>应该发现了，抽象的越彻底，这个代码的可复用性越强，适应的场景也越多，维护的成本也就越小，因为其本身含有的逻辑会变得很纯粹，调整了这个插件，其所有相关的插件使用都会发生调整，这样既保留了代码的共性也保证了差异性，但是用户在特定场景下的配置操作就越多，调用越烦琐。所以轮子总是在符合特定条件下的时候才会顺手。要适当权衡抽象的程度，以免投入和产出不成正比😂。</p>
+<p>PS: 不是说只有js才可以抽象，css也可以抽象，把具有共性的css整合，再比如一些插件的dom自动填充，都可以算是样式的抽象，让样式不再具有强业务，都是通过某几个特定的类组合后适当修饰得到的，这点可以参照bootstrap。</p>
+<img src="/2020/06/04/%E6%9D%A5%E8%87%AA%E5%89%8D%E7%AB%AF%E5%B0%8F%E7%99%BD%E7%9A%84%E7%9E%8E%E9%80%BC%E9%80%BC/abstract-process.jpg">
+
+
+
+
+
+
+      
+
+    </section>
+    
+      <section class='ArticleMeta'>
+          <div>
+            发布于&nbsp;
+            <time datetime="2020-06-04T08:35:08.000Z" itemprop="datePublished">
+              2020-06-04
+            </time>
+          </div>
+          
+      </section>
+    
+    
+</article>
+
+  
+</div>
+
+            <footer>
+    <div>© 2020 - Jeff Sirens </div>
+    <div>
+        <span>
+            Powered by <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a>
+        </span>
+        ,
+        <span>
+            Theme - <a href="https://github.com/nameoverflow/hexo-theme-icalm" target="_blank" rel="noopener">Icalm</a>
+        </span>
+    </div>
+</footer>
+
+        </div>
+    </div>
+</div>
+
+<script src="/js/pager/dist/singlepager.js"></script>
+
+<script>
+var sp = new Pager('data-pager-shell')
+
+</script>
+</body>
+</html>
